@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Who Pays? — The Quiz | Everyday Economics</title>
+<meta name="description" content="A 30-second quiz to see how many of the three questions you already ask before believing a policy announcement.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  /* =========================================================
+     EDIT ZONE 1 — COLORS & FONTS
+     Change these variables to match your site's palette.
+     ========================================================= */
+  :root{
+    --paper:        #EFE9DA;   /* receipt paper */
+    --paper-dark:   #E3DBC6;   /* paper shadow / alt rows */
+    --ink:          #22291F;   /* main text, near-black green-ink */
+    --ink-soft:     #565C4C;   /* secondary text */
+    --line:         #C6BC9E;   /* dotted rule color */
+    --stamp-red:    #A8342A;   /* rubber-stamp red */
+    --money-green:  #33513B;   /* accent green */
+    --gold:         #B98B2E;   /* coin gold */
+    --bg:           #17201A;   /* page background behind the receipt */
+
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body:    'Newsreader', Georgia, serif;
+    --font-mono:    'Space Mono', 'Courier New', monospace;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html,body{
+    margin:0; padding:0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding: 48px 16px 80px;
+    background-image:
+      radial-gradient(ellipse at 50% -10%, rgba(255,255,255,0.05), transparent 60%);
+  }
+
+  a{ color: inherit; }
+
+  /* ---------------------------------------------------------
+     RECEIPT SHELL
+     --------------------------------------------------------- */
+  .receipt-wrap{
+    width: 100%;
+    max-width: 480px;
+    filter: drop-shadow(0 30px 40px rgba(0,0,0,0.45));
+  }
+
+  .receipt{
+    background: var(--paper);
+    background-image:
+      repeating-linear-gradient(180deg, rgba(0,0,0,0.02) 0px, rgba(0,0,0,0.02) 1px, transparent 1px, transparent 3px);
+    position: relative;
+    padding: 36px 30px 40px;
+    /* torn edge top & bottom via clip-path zigzag */
+    clip-path: polygon(
+      0% 10px, 2% 0%, 4% 10px, 6% 0%, 8% 10px, 10% 0%, 12% 10px, 14% 0%, 16% 10px, 18% 0%,
+      20% 10px, 22% 0%, 24% 10px, 26% 0%, 28% 10px, 30% 0%, 32% 10px, 34% 0%, 36% 10px, 38% 0%,
+      40% 10px, 42% 0%, 44% 10px, 46% 0%, 48% 10px, 50% 0%, 52% 10px, 54% 0%, 56% 10px, 58% 0%,
+      60% 10px, 62% 0%, 64% 10px, 66% 0%, 68% 10px, 70% 0%, 72% 10px, 74% 0%, 76% 10px, 78% 0%,
+      80% 10px, 82% 0%, 84% 10px, 86% 0%, 88% 10px, 90% 0%, 92% 10px, 94% 0%, 96% 10px, 98% 0%, 100% 10px,
+      100% calc(100% - 10px),
+      98% 100%, 96% calc(100% - 10px), 94% 100%, 92% calc(100% - 10px), 90% 100%, 88% calc(100% - 10px), 86% 100%, 84% calc(100% - 10px), 82% 100%,
+      80% calc(100% - 10px), 78% 100%, 76% calc(100% - 10px), 74% 100%, 72% calc(100% - 10px), 70% 100%, 68% calc(100% - 10px), 66% 100%, 64% calc(100% - 10px), 62% 100%,
+      60% calc(100% - 10px), 58% 100%, 56% calc(100% - 10px), 54% 100%, 52% calc(100% - 10px), 50% 100%, 48% calc(100% - 10px), 46% 100%, 44% calc(100% - 10px), 42% 100%,
+      40% calc(100% - 10px), 38% 100%, 36% calc(100% - 10px), 34% 100%, 32% calc(100% - 10px), 30% 100%, 28% calc(100% - 10px), 26% 100%, 24% calc(100% - 10px), 22% 100%,
+      20% calc(100% - 10px), 18% 100%, 16% calc(100% - 10px), 14% 100%, 12% calc(100% - 10px), 10% 100%, 8% calc(100% - 10px), 6% 100%, 4% calc(100% - 10px), 2% 100%, 0% calc(100% - 10px)
+    );
+  }
+
+  .receipt-head{
+    text-align:center;
+    padding-bottom: 18px;
+    border-bottom: 1px dashed var(--line);
+    margin-bottom: 20px;
+  }
+
+  .receipt-head .brand{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .receipt-head h1{
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 1.15;
+    margin: 10px 0 6px;
+  }
+
+  .receipt-head .sub{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 1px;
+  }
+
+  /* ---------------------------------------------------------
+     INTRO SCREEN
+     --------------------------------------------------------- */
+  #screen-intro p{
+    font-size: 16px;
+    line-height: 1.55;
+    margin: 0 0 16px;
+  }
+
+  #screen-intro .quote{
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 19px;
+    line-height: 1.4;
+    color: var(--money-green);
+    border-left: 2px solid var(--money-green);
+    padding-left: 14px;
+    margin: 20px 0 22px;
+  }
+
+  /* ---------------------------------------------------------
+     LINE ITEM (question) NUMBERING
+     --------------------------------------------------------- */
+  .lineno{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    display:flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .progress-track{
+    height: 4px;
+    background: var(--paper-dark);
+    border: 1px solid var(--line);
+    margin-bottom: 22px;
+    position: relative;
+  }
+  .progress-fill{
+    height: 100%;
+    background: var(--money-green);
+    width: 0%;
+    transition: width .35s ease;
+  }
+
+  .scenario-tag{
+    display:inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--stamp-red);
+    padding: 3px 8px;
+    margin-bottom: 12px;
+  }
+
+  .question-text{
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 21px;
+    line-height: 1.32;
+    margin: 0 0 22px;
+  }
+
+  .options{
+    list-style: none;
+    margin: 0; padding: 0;
+    display:flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option{
+    display:flex;
+    align-items:flex-start;
+    gap: 10px;
+    width: 100%;
+    text-align:left;
+    background: transparent;
+    border: 1px solid var(--line);
+    padding: 13px 14px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.4;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background .15s ease, border-color .15s ease, transform .1s ease;
+  }
+  .option:hover{
+    background: rgba(51,81,59,0.06);
+    border-color: var(--money-green);
+  }
+  .option:active{ transform: scale(0.99); }
+  .option .bullet{
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink-soft);
+    flex: 0 0 auto;
+    margin-top: 1px;
+  }
+  .option.selected{
+    background: rgba(51,81,59,0.1);
+    border-color: var(--money-green);
+  }
+
+  /* ---------------------------------------------------------
+     RESULT SCREEN
+     --------------------------------------------------------- */
+  #screen-result{ text-align:center; }
+
+  .stamp{
+    display:inline-block;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--stamp-red);
+    border: 3px solid var(--stamp-red);
+    padding: 10px 16px;
+    transform: rotate(-4deg);
+    border-radius: 4px;
+    margin: 6px 0 20px;
+    opacity: 0;
+    animation: stampIn .35s ease forwards .25s;
+  }
+  @keyframes stampIn{
+    0%{ opacity:0; transform: rotate(-4deg) scale(2.2); }
+    60%{ opacity:1; }
+    100%{ opacity:1; transform: rotate(-4deg) scale(1); }
+  }
+
+  .result-title{
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 27px;
+    line-height: 1.2;
+    margin: 0 0 14px;
+  }
+
+  .result-copy{
+    font-size: 16px;
+    line-height: 1.6;
+    text-align: left;
+    margin: 0 0 22px;
+  }
+
+  .tally{
+    border-top: 1px dashed var(--line);
+    border-bottom: 1px dashed var(--line);
+    padding: 16px 0;
+    margin: 0 0 24px;
+    text-align: left;
+  }
+  .tally-row{
+    display:flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    padding: 4px 0;
+  }
+  .tally-row .label{ color: var(--ink); }
+  .tally-row .count{ color: var(--money-green); font-weight: 700; }
+  .tally-row.headline .count{ color: var(--stamp-red); }
+
+  .cta{
+    display:block;
+    width: 100%;
+    text-align:center;
+    background: var(--money-green);
+    color: var(--paper);
+    text-decoration:none;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 15px 18px;
+    border: none;
+    cursor:pointer;
+    margin-bottom: 10px;
+  }
+  .cta:hover{ background: #24392A; }
+
+  .restart{
+    display:block;
+    width:100%;
+    text-align:center;
+    background: transparent;
+    color: var(--ink-soft);
+    border: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 12px;
+    cursor: pointer;
+  }
+  .restart:hover{ border-color: var(--ink-soft); }
+
+  .receipt-foot{
+    text-align:center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--ink-soft);
+    margin-top: 26px;
+    text-transform: uppercase;
+  }
+  .receipt-foot .barcode{
+    margin: 10px auto 8px;
+    height: 30px;
+    width: 70%;
+    background: repeating-linear-gradient(90deg, var(--ink) 0px, var(--ink) 2px, transparent 2px, transparent 4px, var(--ink) 4px, var(--ink) 5px, transparent 5px, transparent 9px);
+    opacity: 0.85;
+  }
+
+  .screen{ display:none; }
+  .screen.active{ display:block; }
+
+  .begin-btn{
+    display:block;
+    width:100%;
+    background: var(--stamp-red);
+    color: #fff;
+    border:none;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform:uppercase;
+    padding: 15px 18px;
+    cursor:pointer;
+    margin-top: 6px;
+  }
+  .begin-btn:hover{ background: #8E2B22; }
+
+  @media (max-width: 400px){
+    .receipt{ padding: 30px 20px 34px; }
+    .question-text{ font-size: 19px; }
+    .receipt-head h1{ font-size: 22px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .stamp{ animation: none; opacity:1; }
+    .option{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="receipt-wrap">
+  <div class="receipt">
+
+    <div class="receipt-head">
+      <div class="brand">Everyday Economics</div>
+      <h1>Do You Already Ask<br>the Right Questions?</h1>
+      <div class="sub">Book 2 · Who Pays? — Reader Check</div>
+    </div>
+
+    <!-- ============ SCREEN: INTRO ============ -->
+    <div class="screen active" id="screen-intro">
+      <p>Every policy announcement is missing something. Most people never notice — because they never ask.</p>
+      <div class="quote">"Who benefits? Who pays? What are we giving up?"</div>
+      <p>Marco, Sara, and James spend the whole book learning to ask these three questions. Let's see how many you already ask, without knowing it.</p>
+      <p style="font-size:14px;color:var(--ink-soft);">8 quick scenarios. No jargon, no right answers to memorize — just your honest first reaction.</p>
+      <button class="begin-btn" id="btn-start">Start the Check &rarr;</button>
+    </div>
+
+    <!-- ============ SCREEN: QUESTION ============ -->
+    <div class="screen" id="screen-question">
+      <div class="lineno">
+        <span id="q-index">ITEM 01 / 08</span>
+        <span id="q-running">&nbsp;</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+
+      <span class="scenario-tag" id="q-character">MARCO</span>
+      <p class="question-text" id="q-text">Loading...</p>
+
+      <ul class="options" id="q-options"></ul>
+    </div>
+
+    <!-- ============ SCREEN: RESULT ============ -->
+    <div class="screen" id="screen-result">
+      <div class="stamp" id="result-stamp">STAMP</div>
+      <h2 class="result-title" id="result-title">Result Title</h2>
+      <p class="result-copy" id="result-copy">Result copy goes here.</p>
+
+      <div class="tally">
+        <div class="tally-row"><span class="label">Asked "Who benefits?"</span><span class="count" id="tally-benefits">0×</span></div>
+        <div class="tally-row"><span class="label">Asked "Who pays?"</span><span class="count" id="tally-pays">0×</span></div>
+        <div class="tally-row"><span class="label">Asked "What are we giving up?"</span><span class="count" id="tally-givingup">0×</span></div>
+        <div class="tally-row headline"><span class="label">Took the headline at face value</span><span class="count" id="tally-headline">0×</span></div>
+      </div>
+
+      <!-- EDIT ZONE 2: point this at your book's page -->
+      <a class="cta" id="cta-link" href="https://everydayeconomics.netlify.app/#books" target="_blank" rel="noopener">Read Who Pays? &rarr;</a>
+      <button class="restart" id="btn-restart">Take it again</button>
+    </div>
+
+    <div class="receipt-foot">
+      <div class="barcode"></div>
+      Thank you for asking questions
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   EDIT ZONE 3 — QUESTIONS
+   Each question needs exactly 4 options tagged:
+   "benefits" | "pays" | "givingup" | "headline"
+   Reorder, reword, or swap scenarios freely — the scoring
+   logic below doesn't care about order, only the tags.
+   ========================================================= */
+const QUESTIONS = [
+  {
+    character: "MARCO",
+    text: "Marco's city just announced free parking downtown, starting Monday. He's already planning a shopping trip. What's your first thought?",
+    options: [
+      { tag:"headline", text:"Free parking! Let's go, Marco." },
+      { tag:"benefits", text:"Free for who, though — shoppers, or the office workers who already had permits?" },
+      { tag:"pays", text:"Someone still has to pay the attendants and keep the lot running. Who's covering that?" },
+      { tag:"givingup", text:"Wonder what else in the transport budget just got quietly trimmed." }
+    ]
+  },
+  {
+    character: "SARA",
+    text: "Sara's phone lights up: the government is sending every household a $500 relief check. Her group chat is all heart emojis. You reply:",
+    options: [
+      { tag:"headline", text:"$500?! Best news all week." },
+      { tag:"benefits", text:"Every household — even the ones that don't need it?" },
+      { tag:"pays", text:"Is this new money, or did it just get moved from somewhere else?" },
+      { tag:"givingup", text:"What program just lost its funding to make room for this?" }
+    ]
+  },
+  {
+    character: "JAMES",
+    text: "At a rally, a candidate promises free college tuition for everyone, starting next year. James is cheering with the crowd. You lean over and say:",
+    options: [
+      { tag:"headline", text:"Wow, that's huge!" },
+      { tag:"benefits", text:"Free tuition, sure — but who actually gets the seats in the best programs?" },
+      { tag:"pays", text:"Someone's tuition bill doesn't just disappear. Who's footing it?" },
+      { tag:"givingup", text:"Curious what other promise quietly didn't make tonight's speech." }
+    ]
+  },
+  {
+    character: "MARCO",
+    text: "Marco's neighborhood just got a brand-new, publicly funded stadium. He's already planning his outfit for the ribbon-cutting. You ask him:",
+    options: [
+      { tag:"headline", text:"A stadium! Your neighborhood made it." },
+      { tag:"benefits", text:"Who's actually going to games there — your block, or people driving in from across town?" },
+      { tag:"pays", text:"Was this built with taxes, debt, or both?" },
+      { tag:"givingup", text:"What didn't get built instead — a school, a clinic, a park?" }
+    ]
+  },
+  {
+    character: "SARA",
+    text: "Sara's city caps rent increases at 2% a year. Landlords are furious online; renters are relieved. She asks what you think.",
+    options: [
+      { tag:"headline", text:"Finally, rent under control." },
+      { tag:"benefits", text:"Great for renters staying put — but what about people trying to find a new place?" },
+      { tag:"pays", text:"If landlords can't raise rent, where do maintenance costs come from instead?" },
+      { tag:"givingup", text:"Wonder if this quietly discourages anyone from building new rentals." }
+    ]
+  },
+  {
+    character: "JAMES",
+    text: "James's company announces a generous year-end bonus — funded, it turns out, by trimming the health plan. James is popping champagne. You gently say:",
+    options: [
+      { tag:"headline", text:"A bonus is a bonus, cheers." },
+      { tag:"benefits", text:"Nice bonus — but is it worth more to you than the coverage you're losing?" },
+      { tag:"pays", text:"So basically... you're paying for your own bonus?" },
+      { tag:"givingup", text:"What happens the one year you actually need that health plan?" }
+    ]
+  },
+  {
+    character: "MARCO",
+    text: "The government cancels the fuel tax for three months. Marco fills up his tank with a grin. You ask him:",
+    options: [
+      { tag:"headline", text:"Cheaper gas — nothing to think about." },
+      { tag:"benefits", text:"Who drives the most, Marco — is this really about you, or someone else?" },
+      { tag:"pays", text:"The government still needs that money from somewhere. Where's it coming from now?" },
+      { tag:"givingup", text:"What road or transit project just got pushed back?" }
+    ]
+  },
+  {
+    character: "SARA",
+    text: "A headline: minimum wage doubles overnight. Sara's boss goes pale, her coworkers cheer. She turns to you.",
+    options: [
+      { tag:"headline", text:"Double pay, what's there to question?" },
+      { tag:"benefits", text:"Doubles for people who keep their jobs — but does everyone keep theirs?" },
+      { tag:"pays", text:"Higher wages have to come from somewhere in the business — prices, profits, hours?" },
+      { tag:"givingup", text:"What might not happen now — hiring, hours, a location or two?" }
+    ]
+  }
+];
+
+/* =========================================================
+   EDIT ZONE 4 — RESULTS
+   tiers are checked by minimum score share (0 to 1).
+   ========================================================= */
+const RESULTS = [
+  {
+    minShare: 0.67,
+    stamp: "Fully Itemized ✓",
+    title: "The Three-Question Citizen",
+    copy: "You're already doing, instinctively, what most people never learn to do on purpose. Marco, Sara, and James spend the whole book fighting their way to exactly where you're already standing. Read Who Pays? anyway — it turns the instinct into something you can explain to anyone at the dinner table."
+  },
+  {
+    minShare: 0.34,
+    stamp: "Partially Verified",
+    title: "The Half-Asking Citizen",
+    copy: "You already sense that something's usually left out of the announcement — you just don't always chase down all three pieces. Who Pays? doesn't teach you something new so much as it hands you the habit: ask all three questions, every time, until the missing half stops being invisible."
+  },
+  {
+    minShare: 0,
+    stamp: "Taken at Face Value",
+    title: "The Headline Reader",
+    copy: "Right now, the announcement is the end of the story for you — not the start of the questions. That's not a flaw; it's how headlines are built to be read. Who Pays? hands you the other half: three questions that turn every policy into something you can actually see through, following Marco, Sara, and James as they learn to ask them."
+  }
+];
+
+/* ========================================================= */
+
+let current = 0;
+const tally = { benefits:0, pays:0, givingup:0, headline:0 };
+
+const screenIntro = document.getElementById('screen-intro');
+const screenQuestion = document.getElementById('screen-question');
+const screenResult = document.getElementById('screen-result');
+
+document.getElementById('btn-start').addEventListener('click', () => {
+  showScreen(screenQuestion);
+  renderQuestion();
+});
+document.getElementById('btn-restart').addEventListener('click', () => {
+  current = 0;
+  tally.benefits = 0; tally.pays = 0; tally.givingup = 0; tally.headline = 0;
+  showScreen(screenIntro);
+});
+
+function showScreen(el){
+  [screenIntro, screenQuestion, screenResult].forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function renderQuestion(){
+  const q = QUESTIONS[current];
+  document.getElementById('q-index').textContent =
+    `ITEM ${String(current+1).padStart(2,'0')} / ${String(QUESTIONS.length).padStart(2,'0')}`;
+  document.getElementById('progress-fill').style.width =
+    `${(current / QUESTIONS.length) * 100}%`;
+  document.getElementById('q-character').textContent = q.character;
+  document.getElementById('q-text').textContent = q.text;
+
+  const list = document.getElementById('q-options');
+  list.innerHTML = '';
+  const letters = ['A','B','C','D'];
+
+  // shuffle display order so the "headline" option isn't always first
+  const shuffled = q.options.map((o,i)=>({...o, _i:i})).sort(()=>Math.random()-0.5);
+
+  shuffled.forEach((opt, idx) => {
+    const li = document.createElement('li');
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.innerHTML = `<span class="bullet">${letters[idx]}.</span><span>${opt.text}</span>`;
+    btn.addEventListener('click', () => selectOption(opt.tag));
+    li.appendChild(btn);
+    list.appendChild(li);
+  });
+}
+
+function selectOption(tag){
+  tally[tag] = (tally[tag] || 0) + 1;
+  current++;
+  if (current < QUESTIONS.length){
+    renderQuestion();
+  } else {
+    document.getElementById('progress-fill').style.width = `100%`;
+    showResult();
+  }
+}
+
+function showResult(){
+  const total = QUESTIONS.length;
+  const sharpCount = tally.benefits + tally.pays + tally.givingup;
+  const share = sharpCount / total;
+
+  const result = RESULTS.find(r => share >= r.minShare) || RESULTS[RESULTS.length-1];
+
+  document.getElementById('result-stamp').textContent = result.stamp;
+  document.getElementById('result-title').textContent = result.title;
+  document.getElementById('result-copy').textContent = result.copy;
+  document.getElementById('tally-benefits').textContent = tally.benefits + '×';
+  document.getElementById('tally-pays').textContent = tally.pays + '×';
+  document.getElementById('tally-givingup').textContent = tally.givingup + '×';
+  document.getElementById('tally-headline').textContent = tally.headline + '×';
+
+  // restart stamp animation each time
+  const stampEl = document.getElementById('result-stamp');
+  stampEl.style.animation = 'none';
+  void stampEl.offsetWidth;
+  stampEl.style.animation = null;
+
+  showScreen(screenResult);
+}
+</script>
+
+</body>
+</html>
