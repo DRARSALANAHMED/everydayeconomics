@@ -415,6 +415,7 @@
       ],
       status: "amazon",
       link: "https://www.amazon.com/dp/B0H5R1MG7R",
+      quizLink: "who-pays-quiz.html",
       promoUntil: null,
       promoLabel: null
     },
@@ -497,6 +498,7 @@
         <div class="book-meta">
           <span class="status ${displayStatus}">${displayLabel}</span>
           ${b.link ? `<a class="link" href="${b.link}" target="_blank" rel="noopener">${displayStatus === 'free' || displayStatus === 'promo' ? 'Read now' : 'View on Amazon'} &rarr;</a>` : ''}
+          ${b.quizLink ? `<a class="link" href="${b.quizLink}">Take the quiz &rarr;</a>` : ''}
           ${b.downloadPdf ? `<a class="link" href="${b.downloadPdf}">Email me for the PDF &rarr;</a>` : ''}
         </div>
         <details>
